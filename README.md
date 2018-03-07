@@ -1,19 +1,6 @@
 # dimension-change-experiment
 simple detection task investigating the effect of changing the relevant stimulus feature and dimension
 
-programmed in Matlab's Psychtoolbox
-
-Files: 
-
-- a_aRunExp.m: General Setting, Setting up Triggers to work in EEG Lab
-- a_framework.m & a_framework_practice.m: Instructions and Loop through blocks
-- b_present3_withframe.m: Stimulus Presentation
-- c_present3_examples.m: Example Stimuli needed for Instructions
-- KbQueueWait_mod: modified version of KbQueueWait to return exact timing
-- y_Flicker_Photometry: manually adapting luminance of colours 
-- z_makeiso3: automatically adapting luminance of colours
-- z_beepiteg.m: present tone (for mistakes, too slow trials) 
-
 Task Overview: 
 
 Participants are presented with three gabor patches in every trial and are instructed to decide whether the 
@@ -33,3 +20,21 @@ One third of the difference trials has the same target stimulus as shown in the 
 one third has a target stimulus differing from the distractors in the same dimension, but another feature (= feature-change trials) 
 and the last third has a target stimulus differing from the distractors in another dimension than in the last difference trial (= dimension-change trials). 
 The sequence of trials is pseudo-randomized independently for every block and subject. 
+
+matlab: use Matlab's Psychtoolbox
+
+Files: 
+
+- a_aRunExp.m: General Setting, Setting up Triggers to work in EEG Lab
+- a_framework.m & a_framework_practice.m: Instructions and Loop through blocks
+- b_present3_withframe.m: Stimulus Presentation
+- c_present3_examples.m: Example Stimuli needed for Instructions
+- KbQueueWait_mod: modified version of KbQueueWait to return exact timing
+- y_Flicker_Photometry: manually adapting luminance of colours 
+- z_makeiso3: automatically adapting luminance of colours
+- z_beepiteg.m: present tone (for mistakes, too slow trials) 
+
+python: use Psychopy
+
+- aRunExp.py: set up and run (work in progress)
+
