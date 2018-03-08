@@ -6,6 +6,9 @@ from psychopy.visual import filters
 from random import randint
 import copy as cp
 
+#make clock object
+clock = core.Clock()
+
 #define colours
 colorstim = [0,1,2] #red,green,blue
 
@@ -36,6 +39,14 @@ texture_blue = np.zeros([256,256,3])
 texture_blue[:,:,0] = -1#r
 texture_blue[:,:,1] = -1#g
 texture_blue[:,:,2] = grating#b
+
+#define button presses
+RESPKEYS = ['left','right']
+QUITKEYS = ['escape','q']
+
+#define stimuli and blocks
+stimnum = 15
+blocknum = 8
 
 #make stimuli
 fixation = visual.ShapeStim(win, 
@@ -70,20 +81,41 @@ randmatsort[80:115]=2
 randmatsort[115:150]=3
 randmat=np.random.permutation(randmatsort)
 
-t = randint(1,4)
+# present stimuli and record responses
 
-for trial in range(120):
+t = randint(1,4)
+response = []
+RT=[]
+
+for trial in range(12):
     
     gabor_m = targettypes[t]
     if t !=0:
         prev_t=cp.copy(t)
-    a=1 #randint(1,2)+2
+    a=randint(1,2)
     feature_change_stim = dict([(1,2),(2,1),(3,4),(4,3)])
     dimension_change_stim = dict([(1,a+2),(2,a+2),(3,a),(4,a)])
     
-    #display stimuli 
-    clock = core.Clock()
+    frameN = 0
+    responded = False
+    event.clearEvents()
+    clock.reset()
+
     for frameN in range(120):#for exactly 120 frames (2 seconds)
+        
+        pressed = event.getKeys(keyList=RESPKEYS+QUITKEYS, timeStamped=clock)
+        if pressed and not responded:
+            responded=True
+            pressedKey, pressedTime = pressed[0]
+            if pressedKey in QUITKEYS:
+                core.quit()
+            elif pressedKey in RESPKEYS:
+                response = pressedKey
+                RT = pressedTime
+        if frameN==119 and not responded:
+            response = np.nan
+            RT = np.nan
+        
         if 1 <= frameN < 48:  # present fixation for 48 frames (800ms)
             fixation.draw()
         if 48 <= frameN < 60: # present stimulus for 12 frames (200ms)
@@ -94,17 +126,16 @@ for trial in range(120):
             blank.draw()
         win.flip()
         
-        #quit on escape
-        if 'escape' in event.getKeys():
-            core.quit()
+    print(response) #just to check
+    print(RT) #just to check
             
-        #decide next stimulus
-        if trial<119:
-            if randmat[trial+1]==0:
-                t=0
-            elif randmat[trial+1]==1:
-                t=prev_t
-            elif randmat[trial+1]==2:
-                t=feature_change_stim[prev_t]
-            elif randmat[trial+1]==3:
-                t=dimension_change_stim[prev_t]
+    #decide next stimulus
+    if trial<150:
+        if randmat[trial+1]==0:
+            t=0
+        elif randmat[trial+1]==1:
+            t=prev_t
+        elif randmat[trial+1]==2:
+            t=feature_change_stim[prev_t]
+        elif randmat[trial+1]==3:
+            t=dimension_change_stim[prev_t]
