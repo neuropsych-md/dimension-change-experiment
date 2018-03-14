@@ -33,8 +33,10 @@ Files:
 - y_Flicker_Photometry: manually adapting luminance of colours 
 - z_makeiso3: automatically adapting luminance of colours
 - z_beepiteg.m: present tone (for mistakes, too slow trials) 
+- data saved in zz_data
 
 python: use Psychopy
 
 - aRunExp.py: set up and run (work in progress)
+- data and log saved in Data
 
