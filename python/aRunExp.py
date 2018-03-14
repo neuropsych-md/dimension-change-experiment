@@ -3,11 +3,65 @@
 
 #import modules
 from __future__ import division
+import os
+import datetime as dt
 import numpy as np
+from psychopy import gui
+from psychopy import logging as log
 from psychopy import visual, core, event
 from psychopy.visual import filters
 from random import randint
 import copy as cp
+from collections import OrderedDict
+
+# starting gui
+
+EXPERIMENT, _ = os.path.basename(__file__).split('.')
+
+sNumber = '1 Subject Number'
+sAge = '2 Subject Age'
+sGender = '3 Subject Gender'
+
+expInfo = OrderedDict([(sNumber,''),
+                       (sAge,''),
+                       (sGender,['female','male','other'])])      
+
+dlg = gui.DlgFromDict(expInfo, title=EXPERIMENT)
+
+# setting path
+
+dataPath = 'Data/'
+nn = str(dt.datetime.now())
+fileName = 's{0}_data.txt'.format(expInfo[sNumber])
+fileNameind = dataPath + nn + '_' + fileName
+file = open(fileNameind,'a')
+logName = 's{0}_log.txt'.format(expInfo[sNumber])
+log.LogFile(f=dataPath + nn + '_' + logName)
+
+# data to be safed
+
+expData = ['Experiment',
+           'sNumber',
+           'sAge',
+           'sGender',
+           'blockNo',
+           'trialNo',
+           'stimtype',
+           'trialtype',
+           'response',
+           'correct',
+           'RT']
+
+dataAll = OrderedDict([(key,np.empty(0,int)) for key in expData])
+for columname in dataAll.keys():
+    file.write(columname)
+    file.write(' ')
+file.write('\n')
+trialtypes = dict([(0,"notarget"),(1,"repeat"),(2,"featchange"),(3,"dimchange")]) 
+stimtypes = dict([(0,"notarget"),(1,"red"),(2,"green"),(3,"left"),(4,"right")])
+
+if not dlg.OK:
+    core.quit()
 
 #open window
 
@@ -57,7 +111,7 @@ QUITKEYS = ['escape','q']
 
 #define stimuli and blocks
 
-stimnum = 150
+stimnum = 15
 blocknum = 8
 
 #make stimuli
@@ -166,6 +220,7 @@ Kein Unterschied: Linke Taste, Unterschied: Rechte Taste'%tuple([block+1,blocknu
                 pressedKey, pressedTime = pressed[0]
                 if pressedKey in QUITKEYS:
                     core.quit()
+                    file.close()
                 elif pressedKey in RESPKEYS:
                     response = pressedKey
                     RT = pressedTime
@@ -185,6 +240,12 @@ Kein Unterschied: Linke Taste, Unterschied: Rechte Taste'%tuple([block+1,blocknu
             
         print(response) #just to check
         print(RT) #just to check
+        
+        correct = "no"
+        if response == "left" and t==0:
+            correct = "yes"
+        elif response == "right" and t>0:
+            correct = "yes"
                 
         if trial<stimnum: #decide next stimulus
             if randmat[trial+1]==0:
@@ -195,7 +256,28 @@ Kein Unterschied: Linke Taste, Unterschied: Rechte Taste'%tuple([block+1,blocknu
                 t=feature_change_stim[prev_t]
             elif randmat[trial+1]==3:
                 t=dimension_change_stim[prev_t]
+                
+        #writing the data
+        dataAll['Experiment'] = EXPERIMENT
+        dataAll['sNumber'] = expInfo[sNumber]
+        dataAll['sAge'] = expInfo[sAge]
+        dataAll['sGender'] = expInfo[sGender]
+        dataAll['blockNo'] = block+1
+        dataAll['trialNo'] = trial+1
+        dataAll['stimtype'] = stimtypes[t]
+        dataAll['trialtype'] = trialtypes[randmat[trial]]
+        dataAll['response'] = response
+        dataAll['correct'] = correct
+        dataAll['RT'] = round(RT,4)
+        
+        for dat in dataAll.keys():
+            file.write(str(dataAll[dat]))
+            file.write(' ')
+        file.write('\n')
+
+# Finish 
 
 Ending.draw()
 win.flip()
 event.waitKeys(keyList = TEXTKEYS)
+file.close()

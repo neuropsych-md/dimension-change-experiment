@@ -1,0 +1,17 @@
+Experiment sNumber sAge sGender blockNo trialNo stimtype trialtype response correct RT 
+aRunExp 00 28 female 1 1 red notarget right yes 1.214 
+aRunExp 00 28 female 1 2 notarget repeat right yes 1.118 
+aRunExp 00 28 female 1 3 notarget notarget left yes 1.3845 
+aRunExp 00 28 female 1 4 red notarget left yes 1.2178 
+aRunExp 00 28 female 1 5 red repeat right yes 1.2011 
+aRunExp 00 28 female 1 6 notarget repeat right yes 1.1513 
+aRunExp 00 28 female 1 7 notarget notarget left yes 1.3004 
+aRunExp 00 28 female 1 8 notarget notarget left yes 1.1845 
+aRunExp 00 28 female 1 9 green notarget left yes 1.2509 
+aRunExp 00 28 female 1 10 notarget featchange right yes 1.2838 
+aRunExp 00 28 female 1 11 notarget notarget left yes 1.4508 
+aRunExp 00 28 female 1 12 left notarget left yes 1.3842 
+aRunExp 00 28 female 1 13 right dimchange right yes 1.3172 
+aRunExp 00 28 female 1 14 left featchange right yes 1.2836 
+aRunExp 00 28 female 1 15 right featchange right yes 1.4174 
+aRunExp 00 28 female 2 1 red notarget nan no nan 
