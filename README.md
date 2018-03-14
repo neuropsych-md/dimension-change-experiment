@@ -37,6 +37,6 @@ Files:
 
 python: use Psychopy
 
-- aRunExp.py: set up and run (work in progress)
+- aRunExp.py: set up and run
 - data and log saved in Data
 
