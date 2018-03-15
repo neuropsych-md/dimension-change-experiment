@@ -214,19 +214,20 @@ Kein Unterschied: Linke Taste, Unterschied: Rechte Taste'%tuple([block+1,blocknu
 
         for frameN in range(120):#for exactly 120 frames (2 seconds)
             
-            pressed = event.getKeys(keyList=RESPKEYS+QUITKEYS, timeStamped=clock)
-            if pressed and not responded:
-                responded=True
-                pressedKey, pressedTime = pressed[0]
-                if pressedKey in QUITKEYS:
-                    core.quit()
-                    file.close()
-                elif pressedKey in RESPKEYS:
-                    response = pressedKey
-                    RT = pressedTime
-            if frameN==119 and not responded:
-                response = np.nan
-                RT = np.nan
+            if frameN > 48:
+                pressed = event.getKeys(keyList=RESPKEYS+QUITKEYS, timeStamped=clock)
+                if pressed and not responded:
+                    responded=True
+                    pressedKey, pressedTime = pressed[0]
+                    if pressedKey in QUITKEYS:
+                        core.quit()
+                        file.close()
+                    elif pressedKey in RESPKEYS:
+                        response = pressedKey
+                        RT = pressedTime-0.8
+                if frameN==119 and not responded:
+                    response = np.nan
+                    RT = np.nan
             
             if 1 <= frameN < 48:  # present fixation for 48 frames (800ms)
                 fixation.draw()
